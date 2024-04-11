@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#AAFF00</color>
+    <color name="blue">#89CFF0</color>
+    <color name="purple">#CF9FFF</color>
+    <color name="purple_bg">#491778</color>
+    <color name="enter_field">#592E87</color>
+    <color name="ef_stroke">#6C449A</color>
+    <color name="ef_font">#aa8fbd</color>
+    <color name="yellow">#dbe65b</color>
+
+
+
+</resources>

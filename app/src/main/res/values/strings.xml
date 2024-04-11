@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">StydyRussian</string>
+    <string name="theory">Теория</string>
+    <string name="practice">Практика</string>
+    <string name="profile">Профиль</string>
+    <string name="greetings">Привет! Готовы учить\nрусский язык?</string>
+    <string name="greetings1">Для начала создадим вам профиль</string>
+    <string name="signUp">Регистрация</string>
+    <string name="signIn">Вход</string>
+    <string name="signedUp">Уже есть аккаунт в Verbum?</string>
+    <string name="toSignIn">Войти</string>
+    <string name="toSignUp">Зарегистрироваться</string>
+    <string name="haveAcc">Уже есть аккаунт?</string>
+    <string name="haveNoAcc">Нет аккаунта?</string>
+    <string name="passHint">Qwerty123</string>
+    <string name="loginHint">BigPluto18564</string>
+    <string name="themes">Темы</string>
+    <string name="prac_progress">Прогресс прохождения 0/8</string>
+    <string name="theory_progress">Прогресс изучения 0/8</string>
+    <string name="personal">Личная информация</string>
+    <string name="change_pass">Изменить пароль</string>
+    <string name="progress">Прогресс</string>
+    <string name="privacy">Политика\nконфиденциальности</string>
+    <string name="logOut">Выйти</string>
+    <string name="deleteAcc">Удалить аккаунт</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

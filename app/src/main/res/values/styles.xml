@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RoundedImageView">
+        <item name="cornerSize">50%</item> <!-- 50% указывает, что углы должны быть скруглены на 50% ширины/высоты изображения -->
+    </style>
+
+
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/purple_bg"
+    tools:context=".PracticeFragment">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="75dp"
+        android:textSize="38sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserratbold"
+        android:text="@string/themes" />
+
+    <ProgressBar
+        android:id="@+id/pracPB"
+        android:layout_width="240dp"
+        android:layout_height="12dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="8"
+        android:progress="0"
+        android:progressDrawable="@drawable/custom_progress_bar"
+        tools:progress="4"
+        />
+
+    <TextView
+        android:id="@+id/pracTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/prac_progress"
+        android:fontFamily="@font/montserratbold"
+        android:textSize="12sp"
+        android:layout_marginTop="3dp"
+        android:textColor="@color/ef_font"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/practiceRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        />
+
+</LinearLayout>
