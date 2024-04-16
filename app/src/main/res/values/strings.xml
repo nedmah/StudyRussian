@@ -15,6 +15,10 @@
     <string name="passHint">Qwerty123</string>
     <string name="loginHint">BigPluto18564</string>
     <string name="themes">Темы</string>
+    <string name="testProgress">0/8</string>
+    <string name="gotIt">Понятно</string>
+    <string name="back">Назад</string>
+    <string name="test">Тест</string>
     <string name="prac_progress">Прогресс прохождения 0/8</string>
     <string name="theory_progress">Прогресс изучения 0/8</string>
     <string name="personal">Личная информация</string>

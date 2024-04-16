@@ -20,9 +20,9 @@ private const val ARG_PARAM2 = "param2"
  * Use the [PracticeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PracticeFragment : Fragment() {
+class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
 
-    val adapter = Practice_adapter()
+    val adapter = Practice_adapter(this)
     private lateinit var binding: FragmentPracticeBinding
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -51,9 +51,9 @@ class PracticeFragment : Fragment() {
 
 
     private fun init() = with(binding){
-        val topicNames = listOf("н/нн в причастиях", "(не)совершенные глаголы", "не/ни","спряжения","разряды местоимений","падежи","косвеннаяречь","правила написания наречий")
+        val topicNames = listOf("н/нн в причастиях", "(не)совершенные глаголы", "не/ни","спряжения","разряды местоимений","падежи","косвенная речь","правила написания наречий")
         val list1 = topicNames.map { topicName ->
-            Practice(topicName, false, false)
+            Practice(topicName, false)
         }
         practiceRecycler.layoutManager = LinearLayoutManager(this@PracticeFragment.context)
         practiceRecycler.adapter= adapter
@@ -79,5 +79,9 @@ class PracticeFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onClick(practice: Practice) {
+        openFragmentWithBackStack(TestFragment.newInstance(null,null))
     }
 }

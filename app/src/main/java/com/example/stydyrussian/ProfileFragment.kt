@@ -36,6 +36,21 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?): View? {
         binding = FragmentProfileBinding.inflate(inflater)
         return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.personalInfo.setOnClickListener {
+            CustomDialog(
+                requireContext(),
+                R.drawable.congrats,
+                "Поздравляем!",
+                "Вы прошли тест на _ из 10. Можно с уверенностью сказать, что вы усвоили тему _",
+                false,
+                "Понятно"
+            ).show()
+        }
     }
 
     companion object {

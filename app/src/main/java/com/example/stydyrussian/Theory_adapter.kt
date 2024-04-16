@@ -11,8 +11,10 @@ import com.example.stydyrussian.databinding.TheoryItemBinding
 class Theory_adapter(val listener: TheoryListener): RecyclerView.Adapter<Theory_adapter.Theory_VH>() {
 
 
+//companion object{
+    var theoryList = ArrayList<Theory>()
+//}
 
-    val theoryList = ArrayList<Theory>()
 
 
 
@@ -45,7 +47,7 @@ class Theory_adapter(val listener: TheoryListener): RecyclerView.Adapter<Theory_
     }
 
     fun addItems(list: List<Theory>) {
-        //theoryList.clear() // очищаем список перед добавлением новых элементов
+        //theoryList.clear()
         theoryList.addAll(list)
         notifyDataSetChanged()
     }
@@ -53,6 +55,7 @@ class Theory_adapter(val listener: TheoryListener): RecyclerView.Adapter<Theory_
     interface TheoryListener{
         fun onClick(theory: Theory)
     }
+
 
 }
 

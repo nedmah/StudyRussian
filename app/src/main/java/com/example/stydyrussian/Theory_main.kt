@@ -7,6 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.stydyrussian.databinding.FragmentTheoryBinding
 import com.example.stydyrussian.databinding.FragmentTheoryMainBinding
 
@@ -22,9 +27,12 @@ private const val ARG_PARAM2 = "param2"
  */
 class Theory_main : Fragment() {
 
+
+
     private lateinit var binding: FragmentTheoryMainBinding
     private var param1: String? = null
     private var param2: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +54,7 @@ class Theory_main : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
 
+
             themeText.text = arguments?.getString(ARG_PARAM1)?.replace("\n"," ")
 
             val fileName = arguments?.getString(ARG_PARAM2)
@@ -53,35 +62,43 @@ class Theory_main : Fragment() {
             val inputStream = resources.openRawResource(resourceId)
             val text = inputStream.bufferedReader().use { it.readText() }
             mainText.text = text
+            val digit = fileName?.filter { it.isDigit() }
+            val themeNumber = digit?.toInt()?.minus(1)
+
+
 
             theoryScroll.viewTreeObserver.addOnScrollChangedListener {
                 if (theoryScroll.getChildAt(0).bottom <= (theoryScroll.height + theoryScroll.scrollY)) {
 
+                    theoryIndicator[themeNumber!!] = 1
+
+//                    dataModel.theoryNumber.value = themeNumber
+
+
+
                 }
+            }
+            backButton.setOnClickListener {
+                    requireActivity().supportFragmentManager.popBackStack()
             }
 
         }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Theory_main.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
-        fun newInstance(title: String?, param2: String?) =
+        fun newInstance(title: String, themeName: String) =
             Theory_main().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, title)
-                    putString(ARG_PARAM2, param2)
+                    putString(ARG_PARAM2, themeName)
                 }
             }
+
+        val theoryIndicator = MutableList(8) { 0 }
     }
+
 
 
 

@@ -6,6 +6,7 @@
     <color name="blue">#89CFF0</color>
     <color name="purple">#CF9FFF</color>
     <color name="purple_bg">#491778</color>
+    <color name="button_pressed">#4C1680</color>
     <color name="enter_field">#592E87</color>
     <color name="ef_stroke">#6C449A</color>
     <color name="ef_font">#aa8fbd</color>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".TestFragment"
+    android:orientation="vertical"
+    android:background="@color/purple_bg">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_bg"
+        android:src="@drawable/back"
+        />
+
+    <TextView
+        android:id="@+id/themeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="28sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserratbold"
+        android:text="@string/test"
+        />
+
+    <TextView
+        android:id="@+id/testTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text=""
+        android:fontFamily="@font/montserratbold"
+        android:textSize="16sp"
+        android:layout_marginTop="3dp"
+        android:textColor="@color/ef_font"
+        tools:text="Тема: падежи"
+        />
+
+    <TextView
+        android:id="@+id/mainText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+        android:fontFamily="@font/montserratregular"
+        android:padding="16dp"
+        android:textColor="@color/white"
+        tools:text="I don't lose i win that's my job i will win im the best ever"
+        />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:fontFamily="@font/montserratbold"
+        android:background="@drawable/shadow_button"
+        app:backgroundTint="@null"
+        android:elevation="15dp"
+        android:stateListAnimator="@null"
+        android:textColor="@color/purple_bg"
+        android:text=""
+        />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:fontFamily="@font/montserratbold"
+        android:background="@drawable/shadow_button"
+        app:backgroundTint="@null"
+        android:elevation="15dp"
+        android:stateListAnimator="@null"
+        android:textColor="@color/purple_bg"
+        android:text=""
+        />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:fontFamily="@font/montserratbold"
+        android:background="@drawable/shadow_button"
+        app:backgroundTint="@null"
+        android:elevation="15dp"
+        android:stateListAnimator="@null"
+        android:textColor="@color/purple_bg"
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/theoryTW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/testProgress"
+        android:fontFamily="@font/montserratsemibold"
+        android:textSize="20sp"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        />
+
+    <ProgressBar
+        android:id="@+id/theoryPB"
+        android:layout_width="240dp"
+        android:layout_height="12dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="8"
+        android:progress="0"
+        android:progressDrawable="@drawable/custom_progress_bar"
+        tools:progress="4"
+        />
+
+</LinearLayout>

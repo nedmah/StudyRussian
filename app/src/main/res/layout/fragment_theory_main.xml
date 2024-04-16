@@ -7,12 +7,23 @@
     tools:background="@color/purple_bg"
     tools:context=".Theory_main">
 
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_bg"
+        android:src="@drawable/back"
+        />
+
     <TextView
         android:id="@+id/themeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="10dp"
         android:textSize="24sp"
         android:textColor="@color/white"
         android:fontFamily="@font/montserratbold"
@@ -25,7 +36,10 @@
         android:id="@+id/theory_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:scrollbarThumbVertical="@drawable/thumb"
+        android:scrollbarTrackVertical="@drawable/track"
+        >
 
         <TextView
             android:id="@+id/mainText"

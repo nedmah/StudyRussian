@@ -1,10 +1,13 @@
 package com.example.stydyrussian
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 //import com.example.stydyrussian.Theory_adapter.Companion.theoryList
 import com.example.stydyrussian.databinding.FragmentTheoryBinding
@@ -44,9 +47,15 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
         }
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTheoryBinding.inflate(inflater)
         init()
+        Theory_main.theoryIndicator.forEachIndexed(){index,item ->
+            if(item==1) adapter.theoryList[index].isCompleted = true
+        }
+
+
         return binding.root
     }
 
@@ -54,6 +63,24 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
+
+    override fun onPause() {
+        super.onPause()
+        adapter.theoryList.clear()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val progress = Theory_main.theoryIndicator.count{it==1}
+        binding.theoryPB.progress = progress
+        binding.theoryTW.text = binding.theoryTW.text.replaceFirst("\\d+".toRegex(), progress.toString())
+
+
+    }
+
+
+
+
 
     private fun init() = with(binding){
         theoryRecycler.layoutManager = GridLayoutManager(this@TheoryFragment.context,3)
@@ -63,26 +90,19 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
             val topicName = if (index < topicNames.size) topicNames[index] else "Тема ${index + 1}"
             Theory(image, topicName, false)
         }
+
         adapter.addItems(list1)
     }
 
     override fun onClick(theory: Theory) {
         val fileName = "theme${topicNames.indexOf(theory.title) + 1}"
-        openFragment(Theory_main.newInstance(theory.title,fileName))
+        openFragmentWithBackStack(Theory_main.newInstance(theory.title,fileName))
     }
 
 
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TheoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
         fun newInstance(param1: String?, param2: String?) =
             TheoryFragment().apply {

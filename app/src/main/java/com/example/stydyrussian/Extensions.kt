@@ -23,6 +23,16 @@ fun Fragment.openFragment(fragment: Fragment){
         .commit()
 }
 
+
+//открываем фрагмент с бэкстеком из фрагмента
+fun Fragment.openFragmentWithBackStack(fragment: Fragment){
+    (activity as AppCompatActivity).supportFragmentManager
+        .beginTransaction()
+        .replace(R.id.frag_container,fragment)
+        .addToBackStack(null)
+        .commit()
+}
+
 fun AppCompatActivity.openActivity(activity: AppCompatActivity){
     val intent = Intent(this,activity::class.java)
     startActivity(intent)
