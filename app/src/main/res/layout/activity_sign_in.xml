@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/purple_bg"
     android:orientation="vertical"
-    tools:context=".SignUp">
+    tools:context=".GreetingsSigning.SignUp">
 
 
     <ImageButton
@@ -40,6 +40,7 @@
         android:layout_width="320dp"
         android:layout_height="55dp"
         android:hint="@string/loginHint"
+        android:paddingEnd="15dp"
         android:fontFamily="@font/montserratsemibold"
         android:paddingStart="20dp"
         android:drawablePadding="30dp"
@@ -47,7 +48,7 @@
         android:textColorHint="@color/ef_font"
         android:background="@drawable/rounded_edit_text"
         android:textColor="@color/ef_font"
-        android:inputType="textPassword"
+        android:inputType="textPersonName"
         />
 
     <EditText
@@ -57,6 +58,7 @@
         android:layout_width="320dp"
         android:layout_height="55dp"
         android:hint="@string/passHint"
+        android:paddingEnd="15dp"
         android:fontFamily="@font/montserratsemibold"
         android:paddingStart="20dp"
         android:drawablePadding="30dp"

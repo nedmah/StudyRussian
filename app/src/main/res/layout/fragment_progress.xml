@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/purple_bg"
+    tools:context=".Progress">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_bg"
+        android:src="@drawable/back"
+        />
+
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/progress"
+        android:fontFamily="@font/montserratbold"
+        android:textSize="28sp"
+        android:layout_marginTop="35dp"
+        android:textColor="@color/white"
+        />
+
+
+
+    <TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="*"
+    android:padding="16dp">
+
+    <!-- Заголовок таблицы -->
+        <TableRow>
+            <TextView
+                android:text="@string/themes"
+                android:padding="8dp"
+                android:layout_gravity="start"
+                android:fontFamily="@font/montserratbold"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+            <TextView
+                android:text="@string/theory"
+                android:padding="8dp"
+                android:layout_gravity="start"
+                android:textSize="18sp"
+                android:fontFamily="@font/montserratbold"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+            <TextView
+                android:text="@string/test"
+                android:padding="8dp"
+                android:textSize="18sp"
+                android:layout_gravity="start"
+                android:fontFamily="@font/montserratbold"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+        </TableRow>
+
+        <!-- Строки таблицы -->
+        <TableRow>
+            <TextView
+                android:text="@string/theme1"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/theory1"
+                android:text="@string/notStudied"
+                android:layout_gravity="end"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/test1"
+                android:text="@string/nilOutOfTen"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/theme2"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/theory2"
+                android:text="@string/notStudied"
+                android:layout_gravity="end"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/test2"
+                android:text="@string/nilOutOfTen"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/theme3"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/theory3"
+                android:text="@string/notStudied"
+                android:layout_gravity="end"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/test3"
+                android:text="@string/nilOutOfTen"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/theme4"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/theory4"
+                android:text="@string/notStudied"
+                android:layout_gravity="end"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/test4"
+                android:text="@string/nilOutOfTen"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/theme5"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/theory5"
+                android:text="@string/notStudied"
+                android:layout_gravity="end"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/test5"
+                android:text="@string/nilOutOfTen"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/theme6"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/theory6"
+                android:text="@string/notStudied"
+                android:layout_gravity="end"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/test6"
+                android:text="@string/nilOutOfTen"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/theme7"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/theory7"
+                android:text="@string/notStudied"
+                android:layout_gravity="end"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/test7"
+                android:text="@string/nilOutOfTen"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="@string/theme8"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/theory8"
+                android:text="@string/notStudied"
+                android:layout_gravity="end"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+            <TextView
+                android:id="@+id/test8"
+                android:text="@string/nilOutOfTen"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/white"
+                android:padding="8dp"/>
+        </TableRow>
+
+
+
+
+</TableLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="320dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:fontFamily="@font/montserratbold"
+        android:backgroundTint="#981414"
+        android:textColor="@color/ef_font"
+        android:text="@string/reset"
+        />
+
+
+
+</LinearLayout>

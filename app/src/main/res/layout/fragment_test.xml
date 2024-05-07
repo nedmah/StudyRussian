@@ -19,7 +19,6 @@
         />
 
     <TextView
-        android:id="@+id/themeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -62,12 +61,12 @@
         android:layout_marginTop="35dp"
         android:layout_gravity="center"
         android:textSize="16sp"
-        android:fontFamily="@font/montserratbold"
+        android:fontFamily="@font/montserratregular"
         android:background="@drawable/shadow_button"
         app:backgroundTint="@null"
         android:elevation="15dp"
         android:stateListAnimator="@null"
-        android:textColor="@color/purple_bg"
+        android:textColor="@color/white"
         android:text=""
         />
 
@@ -78,12 +77,12 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:textSize="16sp"
-        android:fontFamily="@font/montserratbold"
+        android:fontFamily="@font/montserratregular"
         android:background="@drawable/shadow_button"
         app:backgroundTint="@null"
         android:elevation="15dp"
         android:stateListAnimator="@null"
-        android:textColor="@color/purple_bg"
+        android:textColor="@color/white"
         android:text=""
         />
 
@@ -94,17 +93,17 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:textSize="16sp"
-        android:fontFamily="@font/montserratbold"
+        android:fontFamily="@font/montserratregular"
         android:background="@drawable/shadow_button"
         app:backgroundTint="@null"
         android:elevation="15dp"
         android:stateListAnimator="@null"
-        android:textColor="@color/purple_bg"
+        android:textColor="@color/white"
         android:text=""
         />
 
     <TextView
-        android:id="@+id/theoryTW"
+        android:id="@+id/testTW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -116,7 +115,7 @@
         />
 
     <ProgressBar
-        android:id="@+id/theoryPB"
+        android:id="@+id/testPB"
         android:layout_width="240dp"
         android:layout_height="12dp"
         android:layout_gravity="center"

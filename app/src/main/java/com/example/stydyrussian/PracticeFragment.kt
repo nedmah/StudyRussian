@@ -15,15 +15,13 @@ import com.example.stydyrussian.databinding.FragmentPracticeBinding
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PracticeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
 
     val adapter = Practice_adapter(this)
     private lateinit var binding: FragmentPracticeBinding
+    val topicNames = listOf("н/нн в причастиях", "(не)совершенные глаголы", "Правила написания не/ни","Спряжения","Разряды местоимений","Падежи","Косвенная речь","Правила написания наречий")
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -41,6 +39,9 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
         savedInstanceState: Bundle?): View? {
         binding = FragmentPracticeBinding.inflate(inflater)
         init()
+        TestFragment.testIndicator.forEachIndexed(){index,item ->
+            if(item==1) adapter.practiceList[index].isCompletedTest = true
+        }
         return binding.root
     }
 
@@ -49,9 +50,21 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onPause() {
+        super.onPause()
+        adapter.practiceList.clear()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val progress = TestFragment.testIndicator.count{it==1}
+        binding.pracPB.progress = progress
+        binding.pracTW.text = binding.pracTW.text.replaceFirst("\\d+".toRegex(), progress.toString())
+    }
+
 
     private fun init() = with(binding){
-        val topicNames = listOf("н/нн в причастиях", "(не)совершенные глаголы", "не/ни","спряжения","разряды местоимений","падежи","косвенная речь","правила написания наречий")
+
         val list1 = topicNames.map { topicName ->
             Practice(topicName, false)
         }
@@ -62,14 +75,7 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
 
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PracticeFragment.
-         */
+
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String?, param2: String?) =
@@ -82,6 +88,6 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
     }
 
     override fun onClick(practice: Practice) {
-        openFragmentWithBackStack(TestFragment.newInstance(null,null))
+        openFragmentWithBackStack(TestFragment.newInstance(topicNames.indexOf(practice.title),practice.title))
     }
 }

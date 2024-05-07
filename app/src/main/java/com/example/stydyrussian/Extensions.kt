@@ -33,6 +33,12 @@ fun Fragment.openFragmentWithBackStack(fragment: Fragment){
         .commit()
 }
 
+
+fun Fragment.openActivity(activity: AppCompatActivity){
+    val intent = Intent(getActivity(),activity::class.java)
+    startActivity(intent)
+}
+
 fun AppCompatActivity.openActivity(activity: AppCompatActivity){
     val intent = Intent(this,activity::class.java)
     startActivity(intent)

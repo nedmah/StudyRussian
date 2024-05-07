@@ -19,6 +19,7 @@
         android:text="@string/profile" />
 
     <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_gravity="center"
@@ -169,7 +170,8 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/purple_bg"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="#981414"
             android:textColor="@color/ef_font"
             app:strokeColor="@color/ef_stroke"
             app:strokeWidth="2dp"

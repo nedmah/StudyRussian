@@ -72,10 +72,6 @@ class Theory_main : Fragment() {
 
                     theoryIndicator[themeNumber!!] = 1
 
-//                    dataModel.theoryNumber.value = themeNumber
-
-
-
                 }
             }
             backButton.setOnClickListener {
