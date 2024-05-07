@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.stydyrussian.UserInfo
 
 @Dao
 interface UserDao {
@@ -21,10 +22,18 @@ interface UserDao {
     suspend fun insertUser(user: User)
 
     // 4) Обновление данных пользователя
-    @Update
-    suspend fun updateUser(user: User)
+    @Query("UPDATE users SET name = :name, surname = :surname, email = :email, date = :date WHERE login = :login")
+    suspend fun updateUser(login: String, name: String?, surname: String?, email: String?, date: String?)
 
     // 5) Обновление пароля пользователя по логину
     @Query("UPDATE users SET password = :password WHERE login = :login")
     suspend fun updatePassword(login: String, password: String)
+
+    // 6) Получение данных пользователя по логину
+    @Query("SELECT name, surname, email, date FROM users WHERE login = :login")
+    suspend fun getUserInfo(login: String): UserInfo?
+
+    // 6) Удаление пользователя по логину
+    @Query("DELETE FROM users WHERE login = :login")
+    suspend fun deleteUserByLogin(login: String)
 }

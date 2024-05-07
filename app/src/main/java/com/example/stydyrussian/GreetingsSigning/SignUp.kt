@@ -2,6 +2,7 @@ package com.example.stydyrussian.GreetingsSigning
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.example.stydyrussian.RoomData.MainDb
 import com.example.stydyrussian.RoomData.User
 import com.example.stydyrussian.databinding.ActivitySignUpBinding
@@ -51,21 +52,26 @@ class SignUp : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                //TODO: запись в бд, проверки наличия в бд и так далее
 
-                GlobalScope.launch(Dispatchers.IO) {
-                    val count = db.getUsersDao().checkLoginExists(login)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    try {
+                        val count = db.getUsersDao().checkLoginExists(login)
 
-                    if (count > 0) {
-                        withContext(Dispatchers.Main) {
-                            loginEditText.error = "Такой пользователь уже зарегистрирован"
+                        if (count > 0) {
+                            withContext(Dispatchers.Main) {
+                                loginEditText.error = "Такой пользователь уже зарегистрирован"
+                            }
+                        } else {
+                            val user = User(null, login = login, password = password)
+                            db.getUsersDao().insertUser(user)
+                            withContext(Dispatchers.Main) {
+                                openActivity(SignIn())
+                            }
                         }
-                    } else {
-                        val user = User(null, login = login, password = password)
-                        db.getUsersDao().insertUser(user)
-                        withContext(Dispatchers.Main) {
-                            openActivity(SignIn())
-                        }
+                    } catch (e: Exception) {
+                        // Обработка ошибки при выполнении операции с базой данных
+                        // Например, вывод сообщения об ошибке или логирование
+                        e.printStackTrace()
                     }
                 }
 

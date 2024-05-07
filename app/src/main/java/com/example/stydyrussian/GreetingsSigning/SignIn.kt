@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.stydyrussian.MainActivity
 import com.example.stydyrussian.R
 import com.example.stydyrussian.RoomData.MainDb
@@ -49,25 +51,28 @@ class SignIn : AppCompatActivity() {
                 }
 
 
-                GlobalScope.launch(Dispatchers.IO) {
+                lifecycleScope.launch(Dispatchers.IO) {
 
+                    try {
+                        val userCount = db.getUsersDao().checkLoginAndPassword(login, password)
 
-                    val userCount = db.getUsersDao().checkLoginAndPassword(login, password)
-
-                    if (userCount > 0) {
-                        sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-
-                        withContext(Dispatchers.Main){
-                            openActivity(MainActivity())
+                        if (userCount > 0) {
+                            sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+                            sharedPreferences.edit().putString("login",login).apply()
+                            withContext(Dispatchers.Main){
+                                openActivity(MainActivity())
+                            }
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                passEditText.error = "Неверный пароль или пользователя не существует"
+                            }
                         }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            passEditText.error = "Неверный пароль или пользователя не существует"
-                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
-
-
                 }
+
+
             }
 
             backButton.setOnClickListener {

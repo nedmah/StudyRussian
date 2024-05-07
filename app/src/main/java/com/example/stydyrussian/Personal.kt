@@ -19,12 +19,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.lifecycleScope
+import com.example.stydyrussian.RoomData.MainDb
 import com.example.stydyrussian.databinding.FragmentPersonalBinding
 import com.example.stydyrussian.databinding.FragmentProfileBinding
 import com.google.android.material.internal.ViewUtils.showKeyboard
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -38,15 +46,20 @@ private const val ARG_PARAM2 = "param2"
 class Personal : Fragment() {
 
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
+    private var login: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentPersonalBinding
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
+    private lateinit var db: MainDb
+    private var name : String? = null
+    private var surname : String? = null
+    private var email : String? = null
+    private var date : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            login = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
 
@@ -74,12 +87,35 @@ class Personal : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPersonalBinding.inflate(inflater)
+        db = MainDb.getDb(requireContext())
+        binding.apply {
 
-        val savedImageUri = getSavedImageUri(requireContext())
-        savedImageUri?.let {
-            binding.image.setImageURI(it)
+            loginTV.text = "@$login"
+
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+
+                try {
+                    val userInfo = db.getUsersDao().getUserInfo(login!!)
+                    withContext(Dispatchers.Main){
+                        nameEditText.setText(userInfo?.name)
+                        surnameEditText.setText(userInfo?.surname)
+                        emailEditText.setText(userInfo?.email)
+                        dateEditText.setText(userInfo?.date)
+                    }
+                } catch (e: Exception) {
+                    // Обработка ошибки при получении информации о пользователе
+                    // Например, вывод сообщения об ошибке или логирование
+                    e.printStackTrace()
+                }
+            }
+
+
+            val savedImageUri = getSavedImageUri(requireContext())
+            savedImageUri?.let {
+                image.setImageURI(it)
+            }
+
         }
-
         return binding.root
     }
 
@@ -140,6 +176,26 @@ class Personal : Fragment() {
                     }
                 }
             })
+
+
+            confirmBtn.setOnClickListener {
+                binding.apply {
+                    name = if (nameEditText.text.isBlank()) null else nameEditText.text.toString()
+                    surname = if (surnameEditText.text.isBlank()) null else surnameEditText.text.toString()
+                    email = if (emailEditText.text.isBlank()) null else emailEditText.text.toString()
+                    date = if (dateEditText.text.isBlank()) null else dateEditText.text.toString()
+
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                        try {
+                            db.getUsersDao().updateUser(login!!,name,surname, email, date)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+
+                }
+            }
 
 
             backButton.setOnClickListener {
@@ -208,8 +264,6 @@ class Personal : Fragment() {
             Uri.fromFile(file)
         } else {
             null
-
-
         }
     }
 
