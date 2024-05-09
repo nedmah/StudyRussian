@@ -29,14 +29,16 @@ data class Progress(
     var userId: Int? = null,
 
     @ColumnInfo(name = "themeNumber")
-    var themeNumber: Int
+    var themeNumber: Int? = null
 
-) {
-    init {
-        // Устанавливаем значения по умолчанию для 8 строк
-        if (id in 1..8) {
-            isCompletedTheory = false
-            testProgress = 0
-        }
-    }
-}
+)
+//{
+//    init {
+//        // Устанавливаем значения по умолчанию для 8 строк
+//        if (id in 1..8) {
+//            isCompletedTheory = false
+//            testProgress = 0
+//            themeNumber = null
+//        }
+//    }
+//}

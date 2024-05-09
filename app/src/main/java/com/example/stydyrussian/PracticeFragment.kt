@@ -1,14 +1,18 @@
 package com.example.stydyrussian
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.stydyrussian.RoomData.MainDb
 import com.example.stydyrussian.databinding.FragmentPracticeBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,7 +24,10 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
 
     val adapter = Practice_adapter(this)
     private lateinit var binding: FragmentPracticeBinding
+    private lateinit var db: MainDb
     val topicNames = listOf("н/нн в причастиях", "(не)совершенные глаголы", "Правила написания не/ни","Спряжения","Разряды местоимений","Падежи","Косвенная речь","Правила написания наречий")
+    lateinit var login : String
+    private var progCount = 0
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -39,9 +46,31 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
         savedInstanceState: Bundle?): View? {
         binding = FragmentPracticeBinding.inflate(inflater)
         init()
-        TestFragment.testIndicator.forEachIndexed(){index,item ->
-            if(item==1) adapter.practiceList[index].isCompletedTest = true
+        db = MainDb.getDb(requireContext())
+        val sharedPreferences = requireContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+        login = sharedPreferences.getString("login", "login")!!
+
+//        TestFragment.testIndicator.forEachIndexed(){index,item ->
+//            if(item==1) adapter.practiceList[index].isCompletedTest = true
+//        }
+
+        try {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
+                val id = db.getUsersDao().getUserIdByLogin(login)!!
+                db.getProgressDao().getTestProgressMoreThan7(id).toSet().forEach{
+                    themeNumber -> adapter.practiceList[themeNumber - 1].isCompletedTest = true
+                    progCount+=1 //TODO: небольшой баг есть
+                }
+                withContext(Dispatchers.Main){
+                    binding.pracPB.progress = progCount
+                    binding.pracTW.text = binding.pracTW.text.replaceFirst("\\d+".toRegex(), progCount.toString())
+                }
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
         }
+
+
         return binding.root
     }
 
@@ -55,12 +84,6 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
         adapter.practiceList.clear()
     }
 
-    override fun onStart() {
-        super.onStart()
-        val progress = TestFragment.testIndicator.count{it==1}
-        binding.pracPB.progress = progress
-        binding.pracTW.text = binding.pracTW.text.replaceFirst("\\d+".toRegex(), progress.toString())
-    }
 
 
     private fun init() = with(binding){
@@ -88,6 +111,6 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
     }
 
     override fun onClick(practice: Practice) {
-        openFragmentWithBackStack(TestFragment.newInstance(topicNames.indexOf(practice.title),practice.title))
+        openFragmentWithBackStack(TestFragment.newInstance(topicNames.indexOf(practice.title),practice.title,login))
     }
 }

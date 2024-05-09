@@ -75,6 +75,10 @@ class SignIn : AppCompatActivity() {
 
             }
 
+            textView3.setOnClickListener {
+                openActivity(SignUp())
+            }
+
             backButton.setOnClickListener {
                 openActivity(Greetings())
             }

@@ -65,7 +65,7 @@ class ProfileFragment : Fragment() {
         binding.apply {
             personalInfo.setOnClickListener { openFragmentWithBackStack(Personal.newInstance(login,null)) }
             changePass.setOnClickListener { openFragmentWithBackStack(Change_password.newInstance(login,null)) }
-            progress.setOnClickListener { openFragmentWithBackStack(Progress.newInstance(null,null)) }
+            progress.setOnClickListener { openFragmentWithBackStack(Progress.newInstance(login,null)) }
             privacy.setOnClickListener { openFragmentWithBackStack(Privacy.newInstance(null,null)) }
 
             logOut.setOnClickListener {

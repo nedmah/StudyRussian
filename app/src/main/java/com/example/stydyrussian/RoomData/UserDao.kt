@@ -36,4 +36,9 @@ interface UserDao {
     // 6) Удаление пользователя по логину
     @Query("DELETE FROM users WHERE login = :login")
     suspend fun deleteUserByLogin(login: String)
+
+    // 7) Получение id по логину
+    @Query("SELECT id FROM users WHERE login = :login")
+    suspend fun getUserIdByLogin(login: String): Int?
+
 }
