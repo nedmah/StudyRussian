@@ -99,7 +99,9 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
     override fun onPause() {
         super.onPause()
         adapter.theoryList.clear()
+        progCount = 0
     }
+
 
 
     private fun init() = with(binding){

@@ -59,7 +59,7 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
                 val id = db.getUsersDao().getUserIdByLogin(login)!!
                 db.getProgressDao().getTestProgressMoreThan7(id).toSet().forEach{
                     themeNumber -> adapter.practiceList[themeNumber - 1].isCompletedTest = true
-                    progCount+=1 //TODO: небольшой баг есть
+                    progCount+=1
                 }
                 withContext(Dispatchers.Main){
                     binding.pracPB.progress = progCount
@@ -82,7 +82,9 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
     override fun onPause() {
         super.onPause()
         adapter.practiceList.clear()
+        progCount = 0
     }
+
 
 
 
@@ -99,7 +101,7 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
 
     companion object {
 
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
         fun newInstance(param1: String?, param2: String?) =
             PracticeFragment().apply {
