@@ -32,7 +32,7 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
         R.drawable.narechiya
     )
 
-    val topicNames = listOf("н/нн\nв причастиях", "(не)\nсовершенные\nглаголы", "Правила\nнаписания не/ни","Спряжения\nглаголов","Разряды местоимений","Падежи","Косвенная\nречь","Правила\nнаписания\nнаречий")
+    val topicNames = listOf("н/нн\nв причастиях", "(не)\nсовершенные\nглаголы", "Правила\nнаписания не/ни","Спряжения\nглаголов","Разряды\nместоимений","Падежи","Косвенная\nречь","Правила\nнаписания\nнаречий")
 
 
     // TODO: Rename and change types of parameters

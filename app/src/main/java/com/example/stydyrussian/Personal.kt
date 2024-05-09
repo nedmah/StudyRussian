@@ -115,6 +115,8 @@ class Personal : Fragment() {
                 image.setImageURI(it)
             }
 
+
+
         }
         return binding.root
     }

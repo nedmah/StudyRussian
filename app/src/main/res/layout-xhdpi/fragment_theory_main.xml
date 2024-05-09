@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/purple_bg"
+    tools:context=".Theory_main">
+
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_bg"
+        android:src="@drawable/back"
+        />
+
+    <TextView
+        android:id="@+id/themeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserratbold"
+        android:text=""
+        tools:text="Тема"
+        />
+
+
+    <ScrollView
+        android:id="@+id/theory_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:scrollbarThumbVertical="@drawable/thumb"
+        android:scrollbarTrackVertical="@drawable/track"
+        >
+
+        <TextView
+            android:id="@+id/mainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="16sp"
+            android:fontFamily="@font/montserratregular"
+            android:padding="16dp"
+            android:textColor="@color/white"
+            tools:text="I don't lose i win that's my job i will win im the best ever"
+            />
+
+    </ScrollView>
+
+</LinearLayout>

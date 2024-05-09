@@ -4,5 +4,13 @@
         <item name="cornerSize">50%</item> <!-- 50% указывает, что углы должны быть скруглены на 50% ширины/высоты изображения -->
     </style>
 
+    <style name="TextActive" parent="TextAppearance.AppCompat.Menu">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="TextInactive">
+        <item name="android:textSize">8sp</item>
+    </style>
+
 
 </resources>
