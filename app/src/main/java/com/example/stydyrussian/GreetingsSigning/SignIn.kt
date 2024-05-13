@@ -58,13 +58,14 @@ class SignIn : AppCompatActivity() {
 
                         if (userCount > 0) {
                             sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-                            sharedPreferences.edit().putString("login",login).apply()
-                            withContext(Dispatchers.Main){
+                            sharedPreferences.edit().putString("login", login).apply()
+                            withContext(Dispatchers.Main) {
                                 openActivity(MainActivity())
                             }
                         } else {
                             withContext(Dispatchers.Main) {
-                                passEditText.error = "Неверный пароль или пользователя не существует"
+                                passEditText.error =
+                                    "Неверный пароль или пользователя не существует"
                             }
                         }
                     } catch (e: Exception) {

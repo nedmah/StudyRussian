@@ -25,7 +25,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
+class TheoryFragment : Fragment(), Theory_adapter.TheoryListener {
     private lateinit var binding: FragmentTheoryBinding
     private val adapter = Theory_adapter(this)
     private lateinit var db: MainDb
@@ -39,8 +39,17 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
         R.drawable.speech,
         R.drawable.narechiya
     )
-    lateinit var login : String
-    val topicNames = listOf("н/нн\nв причастиях", "(не)\nсовершенные\nглаголы", "Правила\nнаписания не/ни","Спряжения\nглаголов","Разряды\nместоимений","Падежи","Косвенная\nречь","Правила\nнаписания\nнаречий")
+    lateinit var login: String
+    val topicNames = listOf(
+        "н/нн\nв причастиях",
+        "(не)\nсовершенные\nглаголы",
+        "Правила\nнаписания не/ни",
+        "Спряжения\nглаголов",
+        "Разряды\nместоимений",
+        "Падежи",
+        "Косвенная\nречь",
+        "Правила\nнаписания\nнаречий"
+    )
 
 
     // TODO: Rename and change types of parameters
@@ -56,36 +65,40 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentTheoryBinding.inflate(inflater)
         init()
 
-        val sharedPreferences = requireContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-        login = sharedPreferences.getString("login", "login")!!
+        val sharedPreferences =
+            requireContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+        login = sharedPreferences.getString("login", "login")?: "login"
 
 
         db = MainDb.getDb(requireContext())
 
         try {
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 val id = db.getUsersDao().getUserIdByLogin(login)!!
-                db.getProgressDao().getCompletedThemeNumbers(id).toSet().forEach{
-                    themeNumber -> adapter.theoryList[themeNumber - 1].isCompleted = true
-                    progCount+=1
+                db.getProgressDao().getCompletedThemeNumbers(id).toSet().forEach { themeNumber ->
+                    adapter.theoryList[themeNumber - 1].isCompleted = true
+                    progCount += 1
                 }
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     binding.theoryPB.progress = progCount
-                    binding.theoryTW.text = binding.theoryTW.text.replaceFirst("\\d+".toRegex(), progCount.toString())
+                    binding.theoryTW.text =
+                        binding.theoryTW.text.replaceFirst("\\d+".toRegex(), progCount.toString())
                 }
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
 
 //            it.forEach { themeNumber -> adapter.theoryList[themeNumber - 1].isCompleted = true }
-
-
 
 
         return binding.root
@@ -103,9 +116,8 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
     }
 
 
-
-    private fun init() = with(binding){
-        theoryRecycler.layoutManager = GridLayoutManager(this@TheoryFragment.context,3)
+    private fun init() = with(binding) {
+        theoryRecycler.layoutManager = GridLayoutManager(this@TheoryFragment.context, 3)
         theoryRecycler.adapter = adapter
 //        val topicNames = listOf("н/нн\nв причастиях", "(не)\nсовершенные\nглаголы", "Правила\nнаписания не/ни","Спряжения\nглаголов","Разряды местоимений","Падежи","Косвенная\nречь","Правила\nнаписания\nнаречий")
         val list1 = imageList.mapIndexed { index, image ->
@@ -118,9 +130,8 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
 
     override fun onClick(theory: Theory) {
         val fileName = "theme${topicNames.indexOf(theory.title) + 1}"
-        openFragmentWithBackStack(Theory_main.newInstance(theory.title,fileName,login))
+        openFragmentWithBackStack(Theory_main.newInstance(theory.title, fileName, login))
     }
-
 
 
     companion object {
@@ -134,7 +145,6 @@ class TheoryFragment : Fragment(),Theory_adapter.TheoryListener {
                 }
             }
     }
-
 
 
 }

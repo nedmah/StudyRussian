@@ -51,10 +51,10 @@ class Personal : Fragment() {
     private lateinit var binding: FragmentPersonalBinding
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private lateinit var db: MainDb
-    private var name : String? = null
-    private var surname : String? = null
-    private var email : String? = null
-    private var date : String? = null
+    private var name: String? = null
+    private var surname: String? = null
+    private var email: String? = null
+    private var date: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +96,7 @@ class Personal : Fragment() {
 
                 try {
                     val userInfo = db.getUsersDao().getUserInfo(login!!)
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         nameEditText.setText(userInfo?.name)
                         surnameEditText.setText(userInfo?.surname)
                         emailEditText.setText(userInfo?.email)
@@ -114,7 +114,6 @@ class Personal : Fragment() {
             savedImageUri?.let {
                 image.setImageURI(it)
             }
-
 
 
         }
@@ -183,13 +182,15 @@ class Personal : Fragment() {
             confirmBtn.setOnClickListener {
                 binding.apply {
                     name = if (nameEditText.text.isBlank()) null else nameEditText.text.toString()
-                    surname = if (surnameEditText.text.isBlank()) null else surnameEditText.text.toString()
-                    email = if (emailEditText.text.isBlank()) null else emailEditText.text.toString()
+                    surname =
+                        if (surnameEditText.text.isBlank()) null else surnameEditText.text.toString()
+                    email =
+                        if (emailEditText.text.isBlank()) null else emailEditText.text.toString()
                     date = if (dateEditText.text.isBlank()) null else dateEditText.text.toString()
 
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                         try {
-                            db.getUsersDao().updateUser(login!!,name,surname, email, date)
+                            db.getUsersDao().updateUser(login!!, name, surname, email, date)
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

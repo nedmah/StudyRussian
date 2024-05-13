@@ -9,16 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.stydyrussian.databinding.PracticeItemBinding
 import com.example.stydyrussian.databinding.TheoryItemBinding
 
-class Practice_adapter(val listener: PracticeListener): RecyclerView.Adapter<Practice_adapter.Practice_VH>() {
+class Practice_adapter(val listener: PracticeListener) :
+    RecyclerView.Adapter<Practice_adapter.Practice_VH>() {
 
 
-
-        val practiceList = ArrayList<Practice>()
-
+    val practiceList = ArrayList<Practice>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Practice_VH {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.practice_item,parent,false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.practice_item, parent, false)
         return Practice_VH(view)
     }
 
@@ -27,16 +27,16 @@ class Practice_adapter(val listener: PracticeListener): RecyclerView.Adapter<Pra
     }
 
     override fun onBindViewHolder(holder: Practice_VH, position: Int) {
-        holder.bind(practiceList[position],listener)
+        holder.bind(practiceList[position], listener)
     }
 
 
-
-    class Practice_VH(item : View) : RecyclerView.ViewHolder(item) {
+    class Practice_VH(item: View) : RecyclerView.ViewHolder(item) {
         val binding = PracticeItemBinding.bind(item)
-        fun bind(practice: Practice,listener: PracticeListener) = with(binding){
+        fun bind(practice: Practice, listener: PracticeListener) = with(binding) {
             tvTaskTitle.text = practice.title
-            if (practice.isCompletedTest) pracCW.strokeColor = ContextCompat.getColor(itemView.context, R.color.green)
+            if (practice.isCompletedTest) pracCW.strokeColor =
+                ContextCompat.getColor(itemView.context, R.color.green)
             else pracCW.strokeColor = ContextCompat.getColor(itemView.context, R.color.ef_stroke)
             itemView.setOnClickListener {
                 listener.onClick(practice)
@@ -50,7 +50,7 @@ class Practice_adapter(val listener: PracticeListener): RecyclerView.Adapter<Pra
         notifyDataSetChanged()
     }
 
-    interface PracticeListener{
+    interface PracticeListener {
         fun onClick(practice: Practice)
     }
 

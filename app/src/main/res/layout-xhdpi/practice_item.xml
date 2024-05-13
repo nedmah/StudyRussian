@@ -37,7 +37,7 @@
                 android:id="@+id/tv_task_title"
                 android:layout_width="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:fontFamily="@font/montserratsemibold"
                 android:layout_height="wrap_content"
                 android:gravity="center"

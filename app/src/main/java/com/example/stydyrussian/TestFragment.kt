@@ -27,7 +27,7 @@ private const val ARG_PARAM3 = "param3"
 
 class TestFragment : Fragment(), View.OnClickListener {
 
-    private lateinit var binding : FragmentTestBinding
+    private lateinit var binding: FragmentTestBinding
     private var param1: String? = null
     private var param2: String? = null
     private var param3: String? = null
@@ -84,9 +84,7 @@ class TestFragment : Fragment(), View.OnClickListener {
     }
 
 
-
-
-    private fun showQuestion(index: Int)= with(binding){
+    private fun showQuestion(index: Int) = with(binding) {
 
         val question = testQuestions[index]
         mainText.text = question.text
@@ -98,14 +96,15 @@ class TestFragment : Fragment(), View.OnClickListener {
     }
 
     private fun checkAnswer(selectedAnswerIndex: Int) {
-        val correctAnswerIndex = testQuestions[currentQuestionIndex].answers.indexOfFirst { it.isCorrect }
+        val correctAnswerIndex =
+            testQuestions[currentQuestionIndex].answers.indexOfFirst { it.isCorrect }
         val isAnswerCorrect = selectedAnswerIndex == correctAnswerIndex
-        binding.testTW.text = "${currentQuestionIndex+1}/10"
-        binding.testPB.progress = currentQuestionIndex+1
+        binding.testTW.text = "${currentQuestionIndex + 1}/10"
+        binding.testPB.progress = currentQuestionIndex + 1
         // Оценить ответ и выполнить необходимые действия (например, обновить счетчик правильных ответов)
-        if (isAnswerCorrect){
+        if (isAnswerCorrect) {
             correctCounter++
-        }else{
+        } else {
 
         }
 
@@ -114,37 +113,38 @@ class TestFragment : Fragment(), View.OnClickListener {
 
         // Если еще остались вопросы, показать следующий
         if (currentQuestionIndex < testQuestions.size) showQuestion(currentQuestionIndex)
-
         else {
             // завершение теста
 
             try {
-                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                     val id = db.getUsersDao().getUserIdByLogin(login)
 
-                    val existingProgress = db.getProgressDao().getProgressByUserAndTheme(id!!, themeIndex+1)
+                    val existingProgress =
+                        db.getProgressDao().getProgressByUserAndTheme(id!!, themeIndex + 1)
 
                     if (existingProgress != null) {
                         // Если запись уже существует, обновляем
                         existingProgress.testProgress = correctCounter
                         db.getProgressDao().insertTestProgress(existingProgress)
                     } else {
-                        val progress = Progress(null, false, correctCounter, id, themeIndex+1)
+                        val progress = Progress(null, false, correctCounter, id, themeIndex + 1)
                         db.getProgressDao().insertProgress(progress)
                     }
 
 //                    db.getProgressDao().updateTestProgress(id!!,themeIndex+1,correctCounter)
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
 
-            val message = if (correctCounter > 7) "Поздравляем! Вы прошли тест на $correctCounter из 10. Можно с уверенностью сказать, что вы усвоили тему $themeName"
-             else "Уже неплохо!! Вы прошли тест на $correctCounter из 10. Но чтобы закрепить тему $themeName, повторите теорию и пропробуйте ещё раз."
+            val message =
+                if (correctCounter > 7) "Поздравляем! Вы прошли тест на $correctCounter из 10. Можно с уверенностью сказать, что вы усвоили тему $themeName"
+                else "Уже неплохо!! Вы прошли тест на $correctCounter из 10. Но чтобы закрепить тему $themeName, повторите теорию и пропробуйте ещё раз."
 
             val drawableResId = if (correctCounter > 7) R.drawable.congrats
-             else R.drawable.learn
+            else R.drawable.learn
 
             CustomDialog(
                 requireContext(),
@@ -154,7 +154,6 @@ class TestFragment : Fragment(), View.OnClickListener {
                 false,
                 "Понятно"
             ) { requireActivity().supportFragmentManager.popBackStack() }.show()
-
 
 
 //            testIndicator[themeIndex] = if (correctCounter > 7) 1 else 0
@@ -173,7 +172,7 @@ class TestFragment : Fragment(), View.OnClickListener {
     companion object {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: Int?, param2: String?,login: String?) =
+        fun newInstance(param1: Int?, param2: String?, login: String?) =
             TestFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_PARAM1, param1!!)

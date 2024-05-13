@@ -50,10 +50,10 @@ class Progress : Fragment() {
             db = MainDb.getDb(requireContext())
 
             try {
-                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                     id = db.getUsersDao().getUserIdByLogin(login!!)!!
-                    db.getProgressDao().getCompletedThemeNumbers(id).forEach{
-                            themeNumber -> withContext(Dispatchers.Main){ completeTheory(themeNumber) }
+                    db.getProgressDao().getCompletedThemeNumbers(id).forEach { themeNumber ->
+                        withContext(Dispatchers.Main) { completeTheory(themeNumber) }
                     }
                     db.getProgressDao().getTestScore(id).forEach {
                         withContext(Dispatchers.Main) {
@@ -62,19 +62,31 @@ class Progress : Fragment() {
                     }
 
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
 
             button.setOnClickListener {
-                try {
-                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
-                        db.getProgressDao().deleteProgressByUserId(id)
+
+                CustomDialog(
+                    requireContext(),
+                    R.drawable.sure,
+                    "Уверены?",
+                    "Вы точно хотите сбросить весь прогресс? Это действие нельзя отменить.",
+                    true,
+                    "Сбросить",
+                    onPositiveButtonCallback = {
+                        try {
+                            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                                db.getProgressDao().deleteProgressByUserId(id)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
-                }catch (e: Exception){
-                    e.printStackTrace()
-                }
+                ).show()
+
             }
 
 
@@ -87,8 +99,10 @@ class Progress : Fragment() {
 
 
     private fun completeTheory(number: Int) {
-        val theoryTextViews = arrayOf(binding.theory1, binding.theory2, binding.theory3, binding.theory4,
-            binding.theory5, binding.theory6, binding.theory7, binding.theory8)
+        val theoryTextViews = arrayOf(
+            binding.theory1, binding.theory2, binding.theory3, binding.theory4,
+            binding.theory5, binding.theory6, binding.theory7, binding.theory8
+        )
 
         if (number in 1..theoryTextViews.size) {
             theoryTextViews[number - 1].text = "Изучено"
@@ -96,8 +110,10 @@ class Progress : Fragment() {
     }
 
     private fun completeTest(number: Int, progress: String) {
-        val testTextViews = arrayOf(binding.test1, binding.test2, binding.test3, binding.test4,
-            binding.test5, binding.test6, binding.test7, binding.test8)
+        val testTextViews = arrayOf(
+            binding.test1, binding.test2, binding.test3, binding.test4,
+            binding.test5, binding.test6, binding.test7, binding.test8
+        )
 
         if (number in 1..testTextViews.size) {
             testTextViews[number - 1].text = "$progress/10"

@@ -25,8 +25,17 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
     val adapter = Practice_adapter(this)
     private lateinit var binding: FragmentPracticeBinding
     private lateinit var db: MainDb
-    val topicNames = listOf("н/нн в причастиях", "(не)совершенные глаголы", "Правила написания не/ни","Спряжения","Разряды местоимений","Падежи","Косвенная речь","Правила написания наречий")
-    lateinit var login : String
+    val topicNames = listOf(
+        "н/нн в причастиях",
+        "(не)совершенные глаголы",
+        "Правила написания не/ни",
+        "Спряжения",
+        "Разряды местоимений",
+        "Падежи",
+        "Косвенная речь",
+        "Правила написания наречий"
+    )
+    lateinit var login: String
     private var progCount = 0
 
     // TODO: Rename and change types of parameters
@@ -43,30 +52,30 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentPracticeBinding.inflate(inflater)
         init()
         db = MainDb.getDb(requireContext())
-        val sharedPreferences = requireContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            requireContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
         login = sharedPreferences.getString("login", "login")!!
 
-//        TestFragment.testIndicator.forEachIndexed(){index,item ->
-//            if(item==1) adapter.practiceList[index].isCompletedTest = true
-//        }
 
         try {
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 val id = db.getUsersDao().getUserIdByLogin(login)!!
-                db.getProgressDao().getTestProgressMoreThan7(id).toSet().forEach{
-                    themeNumber -> adapter.practiceList[themeNumber - 1].isCompletedTest = true
-                    progCount+=1
+                db.getProgressDao().getTestProgressMoreThan7(id).toSet().forEach { themeNumber ->
+                    adapter.practiceList[themeNumber - 1].isCompletedTest = true
+                    progCount += 1
                 }
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     binding.pracPB.progress = progCount
-                    binding.pracTW.text = binding.pracTW.text.replaceFirst("\\d+".toRegex(), progCount.toString())
+                    binding.pracTW.text =
+                        binding.pracTW.text.replaceFirst("\\d+".toRegex(), progCount.toString())
                 }
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
@@ -86,15 +95,13 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
     }
 
 
-
-
-    private fun init() = with(binding){
+    private fun init() = with(binding) {
 
         val list1 = topicNames.map { topicName ->
             Practice(topicName, false)
         }
         practiceRecycler.layoutManager = LinearLayoutManager(this@PracticeFragment.context)
-        practiceRecycler.adapter= adapter
+        practiceRecycler.adapter = adapter
         adapter.addItems(list1)
     }
 
@@ -113,6 +120,12 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
     }
 
     override fun onClick(practice: Practice) {
-        openFragmentWithBackStack(TestFragment.newInstance(topicNames.indexOf(practice.title),practice.title,login))
+        openFragmentWithBackStack(
+            TestFragment.newInstance(
+                topicNames.indexOf(practice.title),
+                practice.title,
+                login
+            )
+        )
     }
 }

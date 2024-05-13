@@ -57,7 +57,7 @@ class Theory_main : Fragment() {
         binding.apply {
 
 
-            themeText.text = arguments?.getString(ARG_PARAM1)?.replace("\n"," ")
+            themeText.text = arguments?.getString(ARG_PARAM1)?.replace("\n", " ")
             val fileName = arguments?.getString(ARG_PARAM2)
             val login = arguments?.getString(ARG_PARAM3)
             val resourceId = resources.getIdentifier(fileName, "raw", requireContext().packageName)
@@ -74,10 +74,11 @@ class Theory_main : Fragment() {
 
 
                     try {
-                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                             val id = db.getUsersDao().getUserIdByLogin(login!!)
 
-                            val existingProgress = db.getProgressDao().getProgressByUserAndTheme(id!!, digit!!.toInt())
+                            val existingProgress =
+                                db.getProgressDao().getProgressByUserAndTheme(id!!, digit!!.toInt())
 
                             if (existingProgress != null) {
                                 // Если запись уже существует, обновляем
@@ -89,7 +90,7 @@ class Theory_main : Fragment() {
                             }
 
                         }
-                    }catch (e: Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
 
@@ -98,7 +99,7 @@ class Theory_main : Fragment() {
             }
 
             backButton.setOnClickListener {
-                    requireActivity().supportFragmentManager.popBackStack()
+                requireActivity().supportFragmentManager.popBackStack()
             }
 
         }
@@ -107,7 +108,7 @@ class Theory_main : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(title: String, themeName: String, login : String) =
+        fun newInstance(title: String, themeName: String, login: String) =
             Theory_main().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, title)
@@ -117,8 +118,6 @@ class Theory_main : Fragment() {
             }
 
     }
-
-
 
 
 }

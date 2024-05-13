@@ -17,7 +17,7 @@ class CustomDialog(
     private val positiveButtonText: String = "Да",
     private val neutralButtonText: String = "Назад",
     private val onPositiveButtonCallback: () -> Unit = {}
-): Dialog(context) {
+) : Dialog(context) {
 
     private lateinit var binding: CustomDialogBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +31,7 @@ class CustomDialog(
 
         binding.title.text = title
 
-        if (message != null){
+        if (message != null) {
             binding.message.text = message
         } else {
             binding.message.visibility = View.GONE

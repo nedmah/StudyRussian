@@ -14,20 +14,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        openFragment(PracticeFragment.newInstance(null,null))
+        openFragment(PracticeFragment.newInstance(null, null))
         binding.navigation.selectedItemId = R.id.navigation_practice
 
 
         binding.navigation.setOnItemSelectedListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.navigation_theory -> {
-                    openFragment(TheoryFragment.newInstance(null,null))
+                    openFragment(TheoryFragment.newInstance(null, null))
                 }
+
                 R.id.navigation_practice -> {
-                    openFragment(PracticeFragment.newInstance(null,null))
+                    openFragment(PracticeFragment.newInstance(null, null))
                 }
+
                 R.id.navigation_profile -> {
-                    openFragment(ProfileFragment.newInstance(null,null))
+                    openFragment(ProfileFragment.newInstance(null, null))
                 }
             }
             true

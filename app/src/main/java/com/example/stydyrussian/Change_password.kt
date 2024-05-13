@@ -66,7 +66,7 @@ class Change_password : Fragment() {
 
                 viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                     try {
-                        db.getUsersDao().updatePassword(login!!,password)
+                        db.getUsersDao().updatePassword(login!!, password)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -79,7 +79,6 @@ class Change_password : Fragment() {
             }
         }
     }
-
 
 
     companion object {
