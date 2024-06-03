@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.icu.util.Calendar
 import android.net.Uri
@@ -24,6 +25,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.stydyrussian.RoomData.MainDb
@@ -52,6 +54,7 @@ class Personal : Fragment() {
     private var param2: String? = null
     private lateinit var binding: FragmentPersonalBinding
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private var name: String? = null
     private var surname: String? = null
     private var email: String? = null
@@ -76,6 +79,18 @@ class Personal : Fragment() {
                     binding.image.setImageURI(imageUri)
                 }
             }
+
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                pickImageFromGallery()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Разрешение на доступ к хранилищу не предоставлено",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
 
 //        val file = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),"profile_image.jpg")
@@ -127,7 +142,7 @@ class Personal : Fragment() {
 
 
             image.setOnClickListener {
-                pickImageFromGallery()
+                checkStoragePermissionAndPickImage()
             }
 
 
@@ -235,6 +250,18 @@ class Personal : Fragment() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         imagePickerLauncher.launch(intent)
+    }
+
+
+    private fun checkStoragePermissionAndPickImage() {
+        when {
+            ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED -> {
+                pickImageFromGallery()
+            }
+            else -> {
+                requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+        }
     }
 
     private fun saveImage(context: Context, imageUri: Uri) {
