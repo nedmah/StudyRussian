@@ -2,6 +2,7 @@ package com.example.stydyrussian
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -17,24 +18,29 @@ import com.example.stydyrussian.GreetingsSigning.Greetings
 import com.example.stydyrussian.GreetingsSigning.SignIn
 import com.example.stydyrussian.RoomData.MainDb
 import com.example.stydyrussian.databinding.FragmentProfileBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
 
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var db: MainDb
+
+    private val personalViewModel : PersonalViewModel by activityViewModels()
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     lateinit var login: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,8 +54,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(inflater)
-        val sharedPreferences =
-            requireContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+
         login = sharedPreferences.getString("login", "login")!!
         binding.loginTV.gravity = Gravity.CENTER_HORIZONTAL
         binding.loginTV.text = "@$login"
@@ -114,14 +119,7 @@ class ProfileFragment : Fragment() {
                     true,
                     "Удалить",
                     onPositiveButtonCallback = {
-                        try {
-                            db = MainDb.getDb(requireContext())
-                            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                                db.getUsersDao().deleteUserByLogin(login)
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
+                        personalViewModel.deleteAccount(login)
                         logoutUser()
                     }
                 ).show()
@@ -148,8 +146,6 @@ class ProfileFragment : Fragment() {
 
     private fun logoutUser() {
         // Очищаем SharedPreferences, удаляя информацию о входе пользователя
-        val sharedPreferences =
-            requireContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().remove("isLoggedIn").apply()
         sharedPreferences.edit().remove("login").apply()
         openActivity(Greetings())

@@ -2,20 +2,23 @@ package com.example.stydyrussian.GreetingsSigning
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.stydyrussian.RoomData.MainDb
 import com.example.stydyrussian.RoomData.User
 import com.example.stydyrussian.databinding.ActivitySignUpBinding
 import com.example.stydyrussian.openActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class SignUp : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var validator: Validator
-    private lateinit var db: MainDb
+    private val signingViewModel: SigningViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +26,14 @@ class SignUp : AppCompatActivity() {
         setContentView(binding.root)
 
         validator = Validator()
-        db = MainDb.getDb(this)
+
+        signingViewModel.error.observe(this){ error ->
+            if (error != null) {
+                binding.loginEditText.error = error
+            } else {
+                openActivity(SignIn())
+            }
+        }
 
         binding.apply {
 
@@ -52,28 +62,9 @@ class SignUp : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
+                signingViewModel.signUpUser(login, password)
 
-                lifecycleScope.launch(Dispatchers.IO) {
-                    try {
-                        val count = db.getUsersDao().checkLoginExists(login)
 
-                        if (count > 0) {
-                            withContext(Dispatchers.Main) {
-                                loginEditText.error = "Такой пользователь уже зарегистрирован"
-                            }
-                        } else {
-                            val user = User(null, login = login, password = password)
-                            db.getUsersDao().insertUser(user)
-                            withContext(Dispatchers.Main) {
-                                openActivity(SignIn())
-                            }
-                        }
-                    } catch (e: Exception) {
-                        // Обработка ошибки при выполнении операции с базой данных
-                        // Например, вывод сообщения об ошибке или логирование
-                        e.printStackTrace()
-                    }
-                }
 
             }
 

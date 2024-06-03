@@ -1,30 +1,23 @@
 package com.example.stydyrussian
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
-import com.example.stydyrussian.RoomData.MainDb
-import com.example.stydyrussian.RoomData.Progress
+import androidx.fragment.app.activityViewModels
 import com.example.stydyrussian.databinding.FragmentTestBinding
-import com.example.stydyrussian.databinding.FragmentTheoryBinding
-import com.example.stydyrussian.testData.Answer
 import com.example.stydyrussian.testData.Question
 import com.example.stydyrussian.testData.allTests
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 private const val ARG_PARAM3 = "param3"
 
-
+@AndroidEntryPoint
 class TestFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentTestBinding
@@ -34,11 +27,11 @@ class TestFragment : Fragment(), View.OnClickListener {
     private var themeName = ""
     private var themeIndex = 0
     private var login = ""
-    private lateinit var db: MainDb
     private lateinit var testQuestions: List<Question>
     private var currentQuestionIndex: Int = 0
     private var correctCounter = 0
 
+    private val practiceViewModel : PracticeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +58,6 @@ class TestFragment : Fragment(), View.OnClickListener {
         binding.apply {
 
 
-            db = MainDb.getDb(requireContext())
             themeIndex = arguments?.getInt(ARG_PARAM1)!!
             testQuestions = allTests[themeIndex!!]
             showQuestion(0)
@@ -73,9 +65,6 @@ class TestFragment : Fragment(), View.OnClickListener {
             button1.setOnClickListener(this@TestFragment)
             button2.setOnClickListener(this@TestFragment)
             button3.setOnClickListener(this@TestFragment)
-
-
-
 
             backButton.setOnClickListener {
                 requireActivity().supportFragmentManager.popBackStack()
@@ -101,12 +90,10 @@ class TestFragment : Fragment(), View.OnClickListener {
         val isAnswerCorrect = selectedAnswerIndex == correctAnswerIndex
         binding.testTW.text = "${currentQuestionIndex + 1}/10"
         binding.testPB.progress = currentQuestionIndex + 1
-        // Оценить ответ и выполнить необходимые действия (например, обновить счетчик правильных ответов)
+
         if (isAnswerCorrect) {
             correctCounter++
-        } else {
-
-        }
+        } else { }
 
         // Перейти к следующему вопросу
         currentQuestionIndex++
@@ -114,34 +101,43 @@ class TestFragment : Fragment(), View.OnClickListener {
         // Если еще остались вопросы, показать следующий
         if (currentQuestionIndex < testQuestions.size) showQuestion(currentQuestionIndex)
         else {
-            // завершение теста
 
             try {
-                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                    val id = db.getUsersDao().getUserIdByLogin(login)
-
-                    val existingProgress =
-                        db.getProgressDao().getProgressByUserAndTheme(id!!, themeIndex + 1)
-
-                    if (existingProgress != null) {
-                        // Если запись уже существует, обновляем
-                        existingProgress.testProgress = correctCounter
-                        db.getProgressDao().insertTestProgress(existingProgress)
-                    } else {
-                        val progress = Progress(null, false, correctCounter, id, themeIndex + 1)
-                        db.getProgressDao().insertProgress(progress)
-                    }
-
-//                    db.getProgressDao().updateTestProgress(id!!,themeIndex+1,correctCounter)
-                }
+                practiceViewModel.finishTest(login, themeIndex, correctCounter)
             } catch (e: Exception) {
                 e.printStackTrace()
+                Log.d("IT'S OK DON'T PANIC", "не получился метод после скролла: ")
             }
 
 
+//            try {
+//                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+//                    val id = db.getUsersDao().getUserIdByLogin(login)
+//
+//                    val existingProgress =
+//                        db.getProgressDao().getProgressByUserAndTheme(id!!, themeIndex + 1)
+//
+//                    if (existingProgress != null) {
+//                        // Если запись уже существует, обновляем
+//                        existingProgress.testProgress = correctCounter
+//                        db.getProgressDao().insertTestProgress(existingProgress)
+//                    } else {
+//                        val progress = Progress(null, false, correctCounter, id, themeIndex + 1)
+//                        db.getProgressDao().insertProgress(progress)
+//                    }
+//
+////                    db.getProgressDao().updateTestProgress(id!!,themeIndex+1,correctCounter)
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+
+
             val message =
-                if (correctCounter > 7) "Поздравляем! Вы прошли тест на $correctCounter из 10. Можно с уверенностью сказать, что вы усвоили тему $themeName"
-                else "Уже неплохо!! Вы прошли тест на $correctCounter из 10. Но чтобы закрепить тему $themeName, повторите теорию и пропробуйте ещё раз."
+                if (correctCounter > 7) "Поздравляем! Вы прошли тест на $correctCounter из 10." +
+                        " Можно с уверенностью сказать, что вы усвоили тему $themeName"
+                else "Уже неплохо!! Вы прошли тест на $correctCounter из 10." +
+                        " Но чтобы закрепить тему $themeName, повторите теорию и пропробуйте ещё раз."
 
             val drawableResId = if (correctCounter > 7) R.drawable.congrats
             else R.drawable.learn
@@ -155,8 +151,6 @@ class TestFragment : Fragment(), View.OnClickListener {
                 "Понятно"
             ) { requireActivity().supportFragmentManager.popBackStack() }.show()
 
-
-//            testIndicator[themeIndex] = if (correctCounter > 7) 1 else 0
         }
     }
 
@@ -167,7 +161,6 @@ class TestFragment : Fragment(), View.OnClickListener {
             button3.id -> checkAnswer(2)
         }
     }
-
 
     companion object {
         // TODO: Rename and change types and number of parameters

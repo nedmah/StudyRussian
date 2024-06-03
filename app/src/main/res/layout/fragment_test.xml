@@ -57,7 +57,7 @@
     <Button
         android:id="@+id/button1"
         android:layout_width="360dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
         android:layout_gravity="center"
         android:textSize="16sp"
@@ -73,7 +73,7 @@
     <Button
         android:id="@+id/button2"
         android:layout_width="360dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:textSize="16sp"
@@ -89,7 +89,7 @@
     <Button
         android:id="@+id/button3"
         android:layout_width="360dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:textSize="16sp"
@@ -110,7 +110,7 @@
         android:text="@string/testProgress"
         android:fontFamily="@font/montserratsemibold"
         android:textSize="20sp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:textColor="@color/white"
         />
 
@@ -121,7 +121,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         style="?android:attr/progressBarStyleHorizontal"
-        android:max="8"
+        android:max="10"
         android:progress="0"
         android:progressDrawable="@drawable/custom_progress_bar"
         tools:progress="4"

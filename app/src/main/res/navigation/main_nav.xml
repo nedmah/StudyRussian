@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/practiceFragment">
+    <fragment
+        android:id="@+id/practiceFragment"
+        android:name="com.example.stydyrussian.PracticeFragment"
+        android:label="fragment_practice"
+        tools:layout="@layout/fragment_practice" />
+    <fragment
+        android:id="@+id/theoryFragment"
+        android:name="com.example.stydyrussian.TheoryFragment"
+        android:label="fragment_theory"
+        tools:layout="@layout/fragment_theory" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.stydyrussian.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>

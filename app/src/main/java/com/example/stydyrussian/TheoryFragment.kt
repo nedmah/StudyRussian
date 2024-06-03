@@ -1,34 +1,32 @@
 package com.example.stydyrussian
 
-import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.stydyrussian.RoomData.MainDb
-import com.example.stydyrussian.RoomData.Progress
-//import com.example.stydyrussian.Theory_adapter.Companion.theoryList
 import com.example.stydyrussian.databinding.FragmentTheoryBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-
+@AndroidEntryPoint
 class TheoryFragment : Fragment(), Theory_adapter.TheoryListener {
     private lateinit var binding: FragmentTheoryBinding
     private val adapter = Theory_adapter(this)
-    private lateinit var db: MainDb
+
+    private val theoryViewModel : TheoryViewModel by activityViewModels()
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
     private val imageList = listOf(
         R.drawable.n_nn,
         R.drawable.glagol,
@@ -73,33 +71,31 @@ class TheoryFragment : Fragment(), Theory_adapter.TheoryListener {
         binding = FragmentTheoryBinding.inflate(inflater)
         init()
 
-        val sharedPreferences =
-            requireContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+
         login = sharedPreferences.getString("login", "login")?: "login"
 
 
-        db = MainDb.getDb(requireContext())
 
         try {
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                val id = db.getUsersDao().getUserIdByLogin(login)!!
-                db.getProgressDao().getCompletedThemeNumbers(id).toSet().forEach { themeNumber ->
+            theoryViewModel.theoryListStrokeUpdate(login)
+
+            theoryViewModel.completedThemesList.observe(viewLifecycleOwner){
+                Log.d("Dont panic", it.toString())
+                it.forEach { themeNumber ->
                     adapter.theoryList[themeNumber - 1].isCompleted = true
-                    progCount += 1
                 }
-                withContext(Dispatchers.Main) {
-                    binding.theoryPB.progress = progCount
-                    binding.theoryTW.text =
-                        binding.theoryTW.text.replaceFirst("\\d+".toRegex(), progCount.toString())
-                }
+
+                adapter.notifyDataSetChanged()
             }
+            theoryViewModel.progressCount.observe(viewLifecycleOwner){count ->
+                binding.theoryPB.progress = count ?: 0
+                binding.theoryTW.text = "Прогресс изучения $count/8"
+
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-
-//            it.forEach { themeNumber -> adapter.theoryList[themeNumber - 1].isCompleted = true }
-
 
         return binding.root
     }

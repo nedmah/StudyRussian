@@ -22,15 +22,10 @@ class CustomDialog(
     private lateinit var binding: CustomDialogBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = CustomDialogBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         binding.DialogImage.setImageResource(imageId)
-
         binding.title.text = title
-
         if (message != null) {
             binding.message.text = message
         } else {

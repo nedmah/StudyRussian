@@ -80,7 +80,7 @@
         android:drawableStart="@drawable/profile"
         android:textColorHint="@color/ef_font"
         android:background="@drawable/rounded_edit_text"
-        android:textColor="@color/ef_font"
+        android:textColor="@color/white"
         android:inputType="textPersonName"
         />
 
@@ -98,7 +98,7 @@
         android:drawableStart="@drawable/lock"
         android:textColorHint="@color/ef_font"
         android:background="@drawable/rounded_edit_text"
-        android:textColor="@color/ef_font"
+        android:textColor="@color/white"
         android:inputType="textPassword"
         />
 
@@ -116,7 +116,7 @@
         android:drawableStart="@drawable/lock"
         android:textColorHint="@color/ef_font"
         android:background="@drawable/rounded_edit_text"
-        android:textColor="@color/ef_font"
+        android:textColor="@color/white"
         android:inputType="textPassword"
         />
 

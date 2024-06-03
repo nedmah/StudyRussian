@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".GreetingsSigning.SignUp">
 
-
     <ImageButton
         android:id="@+id/backButton"
         android:layout_marginTop="15dp"
@@ -18,7 +17,6 @@
         android:backgroundTint="@color/purple_bg"
         android:src="@drawable/back"
         />
-
 
     <TextView
         android:id="@+id/textView1"
@@ -33,25 +31,38 @@
         />
 
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        app:hintEnabled="false"
+        app:boxBackgroundMode="outline"
+        android:textColorHint="@color/ef_font"
+        app:boxBackgroundColor="@color/enter_field"
+        >
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/loginEditText"
         android:layout_gravity="center"
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:hint="@string/loginHint"
         android:paddingEnd="15dp"
         android:fontFamily="@font/montserratsemibold"
         android:paddingStart="20dp"
+        android:hint="@string/loginHint"
+        android:textColorHint="@color/ef_font"
         android:drawablePadding="30dp"
         android:drawableStart="@drawable/profile"
-        android:textColorHint="@color/ef_font"
+        android:textColor="@color/white"
         android:background="@drawable/rounded_edit_text"
-        android:textColor="@color/ef_font"
         android:inputType="textPersonName"
         />
 
-    <EditText
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputEditText
         android:layout_marginTop="20dp"
         android:id="@+id/passEditText"
         android:layout_gravity="center"
@@ -65,7 +76,7 @@
         android:drawableStart="@drawable/lock"
         android:textColorHint="@color/ef_font"
         android:background="@drawable/rounded_edit_text"
-        android:textColor="@color/ef_font"
+        android:textColor="@color/white"
         android:inputType="textPassword"
         />
 

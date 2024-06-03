@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.stydyrussian.GreetingsSigning.Validator
 import com.example.stydyrussian.RoomData.MainDb
 import com.example.stydyrussian.databinding.FragmentChangePasswordBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -18,12 +20,14 @@ import kotlinx.coroutines.launch
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
+@AndroidEntryPoint
 class Change_password : Fragment() {
     // TODO: Rename and change types of parameters
     private var login: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentChangePasswordBinding
-    private lateinit var db: MainDb
+    private val personalViewModel : PersonalViewModel by activityViewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,7 +48,6 @@ class Change_password : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
 
-            db = MainDb.getDb(requireContext())
             val validator = Validator()
 
             button.setOnClickListener {
@@ -64,13 +67,7 @@ class Change_password : Fragment() {
                     return@setOnClickListener
                 }
 
-                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                    try {
-                        db.getUsersDao().updatePassword(login!!, password)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
+                login?.let { it1 -> personalViewModel.changePassword(it1,password) }
 
             }
 

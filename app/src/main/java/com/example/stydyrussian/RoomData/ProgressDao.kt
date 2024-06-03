@@ -10,30 +10,24 @@ import com.example.stydyrussian.TestScore
 @Dao
 interface ProgressDao {
 
-    //Обновляем значение прохождения теории и номер этой темы где id = ""
+    //Обновление значения прохождения теории и номера темы по id
     @Query("UPDATE progress SET isCompletedTheory = :newIsCompletedTheory, themeNumber = :newThemeNumber WHERE userId = :userId")
     suspend fun updateProgress(userId: Int, newIsCompletedTheory: Boolean, newThemeNumber: Int)
-
     // Запись прогресса в базу данных
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProgress(progress: Progress)
-
-    //Получаем номера тем где пройдена теория и userId =""
+    //Получение номера тем где пройдена теория и по userId
     @Query("SELECT themeNumber FROM progress WHERE isCompletedTheory = 1 AND userId = :userId")
     suspend fun getCompletedThemeNumbers(userId: Int): List<Int>
-
-    //Получаем прогресс тестов
+    //Получение прогресса тестов
     @Query("SELECT themeNumber, testProgress FROM progress WHERE testProgress > 0 AND userId = :userId")
     suspend fun getTestScore(userId: Int): List<TestScore>
-
-    //Получаем номер темы для отображения теста по id пользователя и где testProgress>7
+    //Получение номера темы для отображения теста по id пользователя где testProgress>7
     @Query("SELECT themeNumber FROM progress WHERE testProgress >= 7 AND userId = :userId")
     suspend fun getTestProgressMoreThan7(userId: Int): List<Int>
-
-    //обновляем прогресс теста
+    //обновление прогресса теста
     @Query("UPDATE progress SET testProgress = :newTestProgress WHERE userId = :userId AND themeNumber = :themeNumber")
     suspend fun updateTestProgress(userId: Int, themeNumber: Int, newTestProgress: Int)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTestProgress(progress: Progress)
 

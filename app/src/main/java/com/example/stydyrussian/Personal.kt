@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
@@ -23,10 +24,12 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.stydyrussian.RoomData.MainDb
 import com.example.stydyrussian.databinding.FragmentPersonalBinding
 import com.example.stydyrussian.databinding.FragmentProfileBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.internal.ViewUtils.showKeyboard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +40,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -50,11 +52,11 @@ class Personal : Fragment() {
     private var param2: String? = null
     private lateinit var binding: FragmentPersonalBinding
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
-    private lateinit var db: MainDb
     private var name: String? = null
     private var surname: String? = null
     private var email: String? = null
     private var date: String? = null
+    private val personalViewModel : PersonalViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,28 +89,26 @@ class Personal : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPersonalBinding.inflate(inflater)
-        db = MainDb.getDb(requireContext())
+
         binding.apply {
 
             loginTV.text = "@$login"
 
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
 
-                try {
-                    val userInfo = db.getUsersDao().getUserInfo(login!!)
-                    withContext(Dispatchers.Main) {
-                        nameEditText.setText(userInfo?.name)
-                        surnameEditText.setText(userInfo?.surname)
-                        emailEditText.setText(userInfo?.email)
-                        dateEditText.setText(userInfo?.date)
-                    }
-                } catch (e: Exception) {
-                    // Обработка ошибки при получении информации о пользователе
-                    // Например, вывод сообщения об ошибке или логирование
-                    e.printStackTrace()
-                }
+            try {
+                personalViewModel.getUserInfo(login!!)
+
+
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
 
+            personalViewModel.userInfo.observe(viewLifecycleOwner){userInfo ->
+                nameEditText.setText(userInfo?.name)
+                surnameEditText.setText(userInfo?.surname)
+                emailEditText.setText(userInfo?.email)
+                dateEditText.setText(userInfo?.date)
+            }
 
             val savedImageUri = getSavedImageUri(requireContext())
             savedImageUri?.let {
@@ -129,8 +129,6 @@ class Personal : Fragment() {
             image.setOnClickListener {
                 pickImageFromGallery()
             }
-
-
 
 
             dateEditText.setOnTouchListener { _, event ->
@@ -181,20 +179,12 @@ class Personal : Fragment() {
 
             confirmBtn.setOnClickListener {
                 binding.apply {
-                    name = if (nameEditText.text.isBlank()) null else nameEditText.text.toString()
-                    surname =
-                        if (surnameEditText.text.isBlank()) null else surnameEditText.text.toString()
-                    email =
-                        if (emailEditText.text.isBlank()) null else emailEditText.text.toString()
-                    date = if (dateEditText.text.isBlank()) null else dateEditText.text.toString()
+                    val name = nameEditText.textOrNull()
+                    val surname = surnameEditText.textOrNull()
+                    val email = emailEditText.textOrNull()
+                    val date = dateEditText.textOrNull()
 
-                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                        try {
-                            db.getUsersDao().updateUser(login!!, name, surname, email, date)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
+                    personalViewModel.updateUser(login!!,name,surname,email,date)
 
 
                 }
@@ -220,6 +210,7 @@ class Personal : Fragment() {
             }
     }
 
+    fun EditText.textOrNull(): String? = if (text.isBlank()) null else text.toString()
 
     fun showDatePickerDialog(view: View) {
         val datePickerDialog = DatePickerDialog(
@@ -247,12 +238,9 @@ class Personal : Fragment() {
     }
 
     private fun saveImage(context: Context, imageUri: Uri) {
-
         val inputStream = context.contentResolver.openInputStream(imageUri)
-
         val filename = "profile_image.jpg"
         val fileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE)
-
         inputStream?.use { input ->
             fileOutputStream.use { output ->
                 input.copyTo(output)

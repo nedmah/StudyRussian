@@ -12,27 +12,31 @@ import com.example.stydyrussian.R
 import com.example.stydyrussian.RoomData.MainDb
 import com.example.stydyrussian.databinding.ActivitySignInBinding
 import com.example.stydyrussian.openActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
+@AndroidEntryPoint
 class SignIn : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var validator: Validator
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var db: MainDb
+
+
+
+    private val signingViewModel: SigningViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
         validator = Validator()
-        db = MainDb.getDb(this)
 
-        sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+
 
         binding.apply {
 
@@ -48,30 +52,23 @@ class SignIn : AppCompatActivity() {
                         passEditText.error = "Введите пароль"
                     }
                     return@setOnClickListener
+
                 }
 
+                signingViewModel.signInUser(login, password)
 
-                lifecycleScope.launch(Dispatchers.IO) {
-
-                    try {
-                        val userCount = db.getUsersDao().checkLoginAndPassword(login, password)
-
-                        if (userCount > 0) {
-                            sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-                            sharedPreferences.edit().putString("login", login).apply()
-                            withContext(Dispatchers.Main) {
-                                openActivity(MainActivity())
-                            }
-                        } else {
-                            withContext(Dispatchers.Main) {
-                                passEditText.error =
-                                    "Неверный пароль или пользователя не существует"
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                signingViewModel.error.observe(this@SignIn){error ->
+                    error?.let {
+                        binding.passEditText.error = it
                     }
                 }
+
+                signingViewModel.loggedIn.observe(this@SignIn){loggedIn ->
+                    if (loggedIn) {
+                        openActivity(MainActivity())
+                    }
+                }
+
 
 
             }

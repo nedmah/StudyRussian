@@ -62,6 +62,7 @@
         android:layout_below="@id/image"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="3dp"
+        android:layout_marginBottom="15dp"
         android:text="@null"
         android:fontFamily="@font/montserratsemibold"
         android:textSize="12sp"
@@ -95,7 +96,7 @@
         android:textSize="14sp"
         android:textColor="@color/ef_font" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/nameEditText"
         android:layout_width="320dp"
         android:layout_height="45dp"
@@ -108,10 +109,11 @@
         android:drawablePadding="30dp"
         android:textColorHint="@color/ef_font"
         android:background="@drawable/shadow_edit_text"
-        android:textColor="@color/ef_font"
+        android:textColor="@color/white"
         android:elevation="15dp"
         android:textSize="16sp"
         android:inputType="textPersonName" />
+
 
     <TextView
         android:id="@+id/surnameTV"
@@ -140,7 +142,7 @@
         android:background="@drawable/shadow_edit_text"
         android:elevation="15dp"
         android:textSize="16sp"
-        android:textColor="@color/ef_font"
+        android:textColor="@color/white"
         android:inputType="textPersonName" />
 
     <TextView
@@ -170,7 +172,7 @@
         android:background="@drawable/shadow_edit_text"
         android:elevation="15dp"
         android:textSize="16sp"
-        android:textColor="@color/ef_font"
+        android:textColor="@color/white"
         android:inputType="textEmailAddress" />
 
     <TextView
@@ -201,7 +203,7 @@
         android:background="@drawable/shadow_edit_text"
         android:elevation="15dp"
         android:textSize="16sp"
-        android:textColor="@color/ef_font"
+        android:textColor="@color/white"
         android:drawableEnd="@drawable/date"
         android:paddingEnd="20dp"
         android:inputType="date" />

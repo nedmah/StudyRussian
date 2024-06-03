@@ -1,30 +1,36 @@
 package com.example.stydyrussian
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stydyrussian.RoomData.MainDb
 import com.example.stydyrussian.databinding.FragmentPracticeBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-
+@AndroidEntryPoint
 class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
 
-    val adapter = Practice_adapter(this)
     private lateinit var binding: FragmentPracticeBinding
-    private lateinit var db: MainDb
+    val adapter = Practice_adapter(this)
+    private val practiceViewModel: PracticeViewModel by activityViewModels()
+
     val topicNames = listOf(
         "н/нн в причастиях",
         "(не)совершенные глаголы",
@@ -38,7 +44,9 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
     lateinit var login: String
     private var progCount = 0
 
-    // TODO: Rename and change types of parameters
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
     private var param1: String? = null
     private var param2: String? = null
 
@@ -56,29 +64,32 @@ class PracticeFragment : Fragment(), Practice_adapter.PracticeListener {
     ): View? {
         binding = FragmentPracticeBinding.inflate(inflater)
         init()
-        db = MainDb.getDb(requireContext())
-        val sharedPreferences =
-            requireContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+
         login = sharedPreferences.getString("login", "login")!!
 
 
         try {
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                val id = db.getUsersDao().getUserIdByLogin(login)!!
-                db.getProgressDao().getTestProgressMoreThan7(id).toSet().forEach { themeNumber ->
-                    adapter.practiceList[themeNumber - 1].isCompletedTest = true
-                    progCount += 1
+            practiceViewModel.practiceListStrokeUpdate(login)
+
+            practiceViewModel.completedThemesList.observe(viewLifecycleOwner) {
+                Log.d("Dont panic", it.toString())
+
+                if (it.isNotEmpty()) {
+                    it.forEach { themeNumber ->
+                        adapter.practiceList[themeNumber - 1].isCompletedTest = true
+                    }
                 }
-                withContext(Dispatchers.Main) {
-                    binding.pracPB.progress = progCount
-                    binding.pracTW.text =
-                        binding.pracTW.text.replaceFirst("\\d+".toRegex(), progCount.toString())
+                adapter.notifyDataSetChanged()
+
+                practiceViewModel.progressCount.observe(viewLifecycleOwner) { count ->
+                    binding.pracPB.progress = count ?: 0
+                    binding.pracTW.text = "Прогресс прохождения $count/8"
+
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
 
         return binding.root
     }
